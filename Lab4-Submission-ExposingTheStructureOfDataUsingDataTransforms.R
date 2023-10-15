@@ -110,14 +110,14 @@ summary(stdperf_data_center_transform)
 # STEP 5 - Apply a Standardize Data Transform
 
 summary(StudentPerformanceDataset)
-sapply(StudentPerformanceDataset[, 97], sd)
+sapply(StudentPerformanceDataset[, 3], sd)
 model_of_the_transform <- preProcess(StudentPerformanceDataset,
                                      method = c("scale", "center"))
 print(model_of_the_transform)
 stdperf_data_standardize_transform <- predict(model_of_the_transform, StudentPerformanceDataset) # nolint
 
 summary(stdperf_data_standardize_transform)
-sapply(stdperf_data_standardize_transform[, 97], sd)
+sapply(stdperf_data_standardize_transform[, 3], sd)
 
 # STEP 6 - Apply a Normalize Data Transform
 
@@ -132,8 +132,8 @@ summary(stdperf_data_normalize_transform)
 summary(stdperf_data_standardize_transform)
 
 # Calculate the skewness before the Box-Cox transform
-sapply(stdperf_data_standardize_transform[, 99],  skewness, type = 2)
-sapply(stdperf_data_standardize_transform[, 99], sd)
+sapply(stdperf_data_standardize_transform[, 3],  skewness, type = 2)
+sapply(stdperf_data_standardize_transform[, 3], sd)
 
 model_of_the_transform <- preProcess(stdperf_data_standardize_transform,
                                      method = c("BoxCox"))
@@ -143,14 +143,14 @@ stdperf_data_box_cox_transform <- predict(model_of_the_transform,
 
 summary(stdperf_data_box_cox_transform)
 
-sapply(stdperf_data_box_cox_transform[, 99],  skewness, type = 2)
-sapply(stdperf_data_box_cox_transform[, 99], sd)
+sapply(stdperf_data_box_cox_transform[, 3],  skewness, type = 2)
+sapply(stdperf_data_box_cox_transform[, 3], sd)
 
 # Calculate the skewness after the Box-Cox transform
-sapply(stdperf_data_box_cox_transform[, 99],  skewness, type = 2)
-sapply(stdperf_data_box_cox_transform[, 99], sd)
+sapply(stdperf_data_box_cox_transform[, 3],  skewness, type = 2)
+sapply(stdperf_data_box_cox_transform[, 3], sd)
 
-# STEP 8. Apply a Yeo-Johnson Power Transform
+# STEP 8 - Apply a Yeo-Johnson Power Transform
 
 summary(stdperf_data_standardize_transform)
 
@@ -170,4 +170,49 @@ summary(stdperf_data_yeo_johnson_transform)
 # Calculate the skewness after the Yeo-Johnson transform
 sapply(stdperf_data_yeo_johnson_transform[, 3],  skewness, type = 2)
 sapply(stdperf_data_yeo_johnson_transform[, 3], sd)
+
+# STEP 9.a - PCA Linear Algebra Transform for Dimensionality Reduction
+
+summary(StudentPerformanceDataset)
+
+model_of_the_transform <- preProcess(StudentPerformanceDataset, method =
+                                       c("scale", "center", "pca"))
+
+print(model_of_the_transform)
+stdperf_pca_dr <- predict(model_of_the_transform, StudentPerformanceDataset)
+
+summary(stdperf_pca_dr)
+dim(stdperf_pca_dr)
+
+# STEP 9.b - PCA Linear Algebra Transform for Feature Extraction
+
+stdperf_pca_fe <- princomp(cor(StudentPerformanceDataset[, 3]))
+summary(stdperf_pca_fe)
+
+factoextra::fviz_eig(stdperf_pca_fe, addlabels = TRUE)
+
+stdperf_pca_fe$loadings[, 1:2]
+
+factoextra::fviz_cos2(stdperf_pca_fe, choice = "var", axes = 1:2)
+                      
+factoextra::fviz_pca_var(stdperf_pca_fe, col.var = "cos2",
+                         gradient.cols = c("red", "orange", "green"),
+                         repel = TRUE)
+
+# STEP 10 - ICA Linear Algebra Transform for Dimensionality Reduction
+
+if (!is.element("fastICA", installed.packages()[, 1])) {
+  install.packages("fastICA", dependencies = TRUE)
+}
+require("fastICA")
+
+summary(StudentPerformanceDataset)
+
+model_of_the_transform <- preProcess(StudentPerformanceDataset,
+                                     method = c("scale", "center", "ica"),
+                                     n.comp = 8)
+print(model_of_the_transform)
+stdperf_ica_dr <- predict(model_of_the_transform, StudentPerformanceDataset)
+
+summary(stdperf_ica_dr)
 
