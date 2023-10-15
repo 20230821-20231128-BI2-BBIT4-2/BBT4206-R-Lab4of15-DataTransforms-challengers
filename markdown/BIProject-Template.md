@@ -13,12 +13,12 @@ Business Intelligence Project
 
 # Student Details
 
-|                                              |     |
-|----------------------------------------------|-----|
-| **Student ID Number**                        | …   |
-| **Student Name**                             | …   |
-| **BBIT 4.2 Group**                           | …   |
-| **BI Project Group Name/ID (if applicable)** | …   |
+|                                              |                                                                                                              |
+|----------------------------------------------|--------------------------------------------------------------------------------------------------------------|
+| **Student ID Number**                        | 1\. 120415 <br> 2. 124255 <br> 3. 124562 <br> 4. 118211 <br> 5. 124422                                       |
+| **Student Name**                             | 1\. Emmanuel Agre <br> 2. Natasha Gichira <br> 3. Ryan Gitonga <br> 4. Fredrick Koech <br> 5. Dennis Muriuki |
+| **BBIT 4.2 Group**                           | C                                                                                                            |
+| **BI Project Group Name/ID (if applicable)** | Challengers                                                                                                  |
 
 # Setup Chunk
 

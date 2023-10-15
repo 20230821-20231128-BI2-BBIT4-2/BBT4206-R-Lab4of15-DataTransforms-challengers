@@ -5,6 +5,12 @@ if (require("languageserver")) {
                    repos = "https://cloud.r-project.org")
 }
 
+<<<<<<< HEAD
+=======
+library(readr)
+StudentPerformanceDataset <- read.csv("data/StudentPerformanceDataset.csv")
+View(StudentPerformanceDataset)
+>>>>>>> main
 
 # STEP 1 - Required Packages
 ## mlbench ----
@@ -63,6 +69,7 @@ if (!is.element("dplyr", installed.packages()[, 1])) {
 require("dplyr")
 
 #STEP 2 - Load the dataset
+<<<<<<< HEAD
 
 StudentPerformanceDataset <- read.csv("data/BI1StudentPerformanceDataset.csv")
 View(StudentPerformanceDataset)
@@ -216,3 +223,12 @@ stdperf_ica_dr <- predict(model_of_the_transform, StudentPerformanceDataset)
 
 summary(stdperf_ica_dr)
 
+=======
+##data(StudentPerformanceDataset)
+names()
+
+stdperf <- StudentPerformanceDataset %>%
+  select(class_group, YOB, `Quizzes and Bonus Marks`, `LabWork`, `CAT 1`, `CAT 2`, Coursework, EXAM, TOTAL)
+
+summary(stdperf)
+>>>>>>> main
