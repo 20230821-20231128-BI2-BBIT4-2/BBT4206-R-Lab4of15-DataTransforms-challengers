@@ -69,14 +69,6 @@ View(StudentPerformanceDataset)
 dim(StudentPerformanceDataset)
 sapply(StudentPerformanceDataset, class)
 
-#crop_dataset <- read_csv("data/BI1StudentPerformanceDataset.csv",
-#                         col_types = cols(
-#                           class_group = col_factor(levels = c("A", "B", "C")),
-#                           YOB = col_factor(levels = c("1998","1999", "2000", "2001", "2002", "2003")),
-#                           GRADE = col_factor(levels = c("A", "B", "C", "D", "E", "F"))
-#                         )
-#)
-
 variable_to_find <- c("YOB", 
                       "Coursework TOTAL: x/40 (40%)", 
                       "EXAM: x/60 (60%)",
@@ -103,3 +95,79 @@ print(model_of_the_transform)
 stdperf_data_scale_transform <- predict(model_of_the_transform, StudentPerformanceDataset)
 
 summary(stdperf_data_scale_transform)
+
+StudentPerformanceDataset_birth <- as.numeric(unlist(stdperf_data_scale_transform[, 3]))
+hist(StudentPerformanceDataset_birth, main = names(stdperf_data_scale_transform)[3])
+
+# STEP 4 - Apply Centre Basic Transform
+
+summary(StudentPerformanceDataset)
+model_of_the_transform <- preProcess(StudentPerformanceDataset, method = c("center"))
+print(model_of_the_transform)
+stdperf_data_center_transform <- predict(model_of_the_transform, StudentPerformanceDataset)
+summary(stdperf_data_center_transform)
+
+# STEP 5 - Apply a Standardize Data Transform
+
+summary(StudentPerformanceDataset)
+sapply(StudentPerformanceDataset[, 97], sd)
+model_of_the_transform <- preProcess(StudentPerformanceDataset,
+                                     method = c("scale", "center"))
+print(model_of_the_transform)
+stdperf_data_standardize_transform <- predict(model_of_the_transform, StudentPerformanceDataset) # nolint
+
+summary(stdperf_data_standardize_transform)
+sapply(stdperf_data_standardize_transform[, 97], sd)
+
+# STEP 6 - Apply a Normalize Data Transform
+
+summary(StudentPerformanceDataset)
+model_of_the_transform <- preProcess(StudentPerformanceDataset, method = c("range"))
+print(model_of_the_transform)
+stdperf_data_normalize_transform <- predict(model_of_the_transform, StudentPerformanceDataset)
+summary(stdperf_data_normalize_transform)
+
+# STEP 7 - Apply a Box-Cox Power Transform
+
+summary(stdperf_data_standardize_transform)
+
+# Calculate the skewness before the Box-Cox transform
+sapply(stdperf_data_standardize_transform[, 99],  skewness, type = 2)
+sapply(stdperf_data_standardize_transform[, 99], sd)
+
+model_of_the_transform <- preProcess(stdperf_data_standardize_transform,
+                                     method = c("BoxCox"))
+print(model_of_the_transform)
+stdperf_data_box_cox_transform <- predict(model_of_the_transform,
+                                       stdperf_data_standardize_transform)
+
+summary(stdperf_data_box_cox_transform)
+
+sapply(stdperf_data_box_cox_transform[, 99],  skewness, type = 2)
+sapply(stdperf_data_box_cox_transform[, 99], sd)
+
+# Calculate the skewness after the Box-Cox transform
+sapply(stdperf_data_box_cox_transform[, 99],  skewness, type = 2)
+sapply(stdperf_data_box_cox_transform[, 99], sd)
+
+# STEP 8. Apply a Yeo-Johnson Power Transform
+
+summary(stdperf_data_standardize_transform)
+
+# Calculate the skewness before the Yeo-Johnson transform
+sapply(stdperf_data_standardize_transform[, 3],  skewness, type = 2)
+sapply(stdperf_data_standardize_transform[, 3], sd)
+
+model_of_the_transform <- preProcess(stdperf_data_standardize_transform,
+                                     method = c("YeoJohnson"))
+print(model_of_the_transform)
+stdperf_data_yeo_johnson_transform <- predict(model_of_the_transform, # nolint
+                                           stdperf_data_standardize_transform)
+
+# AFTER
+summary(stdperf_data_yeo_johnson_transform)
+
+# Calculate the skewness after the Yeo-Johnson transform
+sapply(stdperf_data_yeo_johnson_transform[, 3],  skewness, type = 2)
+sapply(stdperf_data_yeo_johnson_transform[, 3], sd)
+
