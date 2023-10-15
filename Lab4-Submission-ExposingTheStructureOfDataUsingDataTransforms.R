@@ -6,7 +6,7 @@ if (require("languageserver")) {
 }
 
 library(readr)
-StudentPerformanceDataset <- read.csv("data/StudentPerformanceDataset.csv")
+StudentPerformanceDataset <- read.csv("data/BI1StudentPerformanceDataset.csv")
 View(StudentPerformanceDataset)
 
 # STEP 1 - Required Packages
