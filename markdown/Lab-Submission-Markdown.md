@@ -1,0 +1,118 @@
+Business Intelligence Project
+================
+Challengers
+Monday, October 16th 2023
+
+- [Student Details](#student-details)
+- [Setup Chunk](#setup-chunk)
+- [Understanding the Dataset (Exploratory Data Analysis
+  (EDA))](#understanding-the-dataset-exploratory-data-analysis-eda)
+  - [Loading the Dataset](#loading-the-dataset)
+    - [Source:](#source)
+    - [Reference:](#reference)
+
+# Student Details
+
+|                                              |                                                                                                              |
+|----------------------------------------------|--------------------------------------------------------------------------------------------------------------|
+| **Student ID Number**                        | 1\. 120415 <br> 2. 124255 <br> 3. 124562 <br> 4. 118211 <br> 5. 124422                                       |
+| **Student Name**                             | 1\. Emmanuel Agre <br> 2. Natasha Gichira <br> 3. Ryan Gitonga <br> 4. Fredrick Koech <br> 5. Dennis Muriuki |
+| **BBIT 4.2 Group**                           | C                                                                                                            |
+| **BI Project Group Name/ID (if applicable)** | Challengers                                                                                                  |
+
+# Setup Chunk
+
+# Understanding the Dataset (Exploratory Data Analysis (EDA))
+
+## Loading the Dataset
+
+library(readr) StudentPerformanceDataset \<-
+read.csv(“data/StudentPerformanceDataset.csv”)
+View(StudentPerformanceDataset)
+
+### Source:
+
+The dataset that was used can be downloaded here:
+<https://drive.google.com/drive/folders/1-BGEhfOwquXF6KKXwcvrx7WuZXuqmW9q?usp=sharing>
+
+### Reference:
+
+Dr.Allan, O.(2023). Business Intelligence Student Performance dataset.
+UpToDate. Retrieved October 8, 2023, from
+<https://drive.google.com/drive/folders/1-BGEhfOwquXF6KKXwcvrx7WuZXuqmW9q>
+
+library(readr) StudentPerformanceDataset \<-
+read_csv(“StudentPerformanceDataset.csv”)
+View(StudentPerformanceDataset)
+
+summary(StudentPerformanceDataset)
+
+birth \<- as.numeric(unlist(StudentPerformanceDataset\[, 3\]))
+
+hist(birth, main = names(StudentPerformanceDataset)\[3\])
+
+model_of_the_transform \<- preProcess(StudentPerformanceDataset, method
+= c(“scale”)) print(model_of_the_transform) stdperf_data_scale_transform
+\<- predict(model_of_the_transform, StudentPerformanceDataset)
+
+summary(stdperf_data_scale_transform)
+
+StudentPerformanceDataset_birth \<-
+as.numeric(unlist(stdperf_data_scale_transform\[, 3\]))
+hist(StudentPerformanceDataset_birth, main =
+names(stdperf_data_scale_transform)\[3\])
+
+model_of_the_transform \<- preProcess(StudentPerformanceDataset, method
+= c(“center”)) print(model_of_the_transform)
+stdperf_data_center_transform \<- predict(model_of_the_transform,
+StudentPerformanceDataset) summary(stdperf_data_center_transform)
+
+summary(StudentPerformanceDataset)
+sapply(StudentPerformanceDataset\[3\], sd) model_of_the_transform \<-
+preProcess(StudentPerformanceDataset, method = c(“scale”, “center”))
+print(model_of_the_transform) stdperf_data_standardize_transform \<-
+predict(model_of_the_transform, StudentPerformanceDataset) \# nolint
+summary(stdperf_data_standardize_transform)
+sapply(stdperf_data_standardize_transform\[3\], sd)
+
+summary(StudentPerformanceDataset) model_of_the_transform \<-
+preProcess(StudentPerformanceDataset, method = c(“range”))
+print(model_of_the_transform) stdperf_data_normalize_transform \<-
+predict(model_of_the_transform, StudentPerformanceDataset)
+summary(stdperf_data_normalize_transform)
+
+summary(stdperf_data_standardize_transform)
+sapply(stdperf_data_standardize_transform\[3\], skewness, type = 2)
+sapply(stdperf_data_standardize_transform\[3\], sd)
+model_of_the_transform \<-
+preProcess(stdperf_data_standardize_transform, method = c(“BoxCox”))
+print(model_of_the_transform) stdperf_data_box_cox_transform \<-
+predict(model_of_the_transform, stdperf_data_standardize_transform)
+summary(stdperf_data_box_cox_transform)
+sapply(stdperf_data_box_cox_transform\[3\], skewness, type = 2)
+sapply(stdperf_data_box_cox_transform\[3\], sd)
+sapply(stdperf_data_box_cox_transform\[3\], skewness, type = 2)
+sapply(stdperf_data_box_cox_transform\[3\], sd)
+
+summary(stdperf_data_standardize_transform)sapply(stdperf_data_standardize_transform\[3\],
+skewness, type = 2) sapply(stdperf_data_standardize_transform\[3\], sd)
+model_of_the_transform \<-
+preProcess(stdperf_data_standardize_transform, method = c(“YeoJohnson”))
+print(model_of_the_transform) stdperf_data_yeo_johnson_transform \<-
+predict(model_of_the_transform, \# nolint
+stdperf_data_standardize_transform)
+summary(stdperf_data_yeo_johnson_transform)
+sapply(stdperf_data_yeo_johnson_transform\[3\], skewness, type = 2)
+sapply(stdperf_data_yeo_johnson_transform\[3\], sd)
+
+summary(StudentPerformanceDataset) model_of_the_transform \<-
+preProcess(StudentPerformanceDataset, method = c(“scale”, “center”,
+“pca”)) print(model_of_the_transform) stdperf_pca_dr \<-
+predict(model_of_the_transform, StudentPerformanceDataset)
+summary(stdperf_pca_dr) dim(stdperf_pca_dr)
+
+summary(StudentPerformanceDataset) model_of_the_transform \<-
+preProcess(StudentPerformanceDataset, method = c(“scale”, “center”,
+“ica”), n.comp = 8) print(model_of_the_transform) stdperf_ica_dr \<-
+predict(model_of_the_transform, StudentPerformanceDataset)
+summary(stdperf_ica_dr)
